@@ -25,4 +25,4 @@ class Movement(TimeStampedModel):
   amount = models.IntegerField()
   reason = models.CharField(max_length=30, null=True)
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
-  supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
+  supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, null=True)
