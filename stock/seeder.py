@@ -1,6 +1,11 @@
 from stock.models import Category, Movement, Product, Supplier
 
 def seed():
+  Movement.objects.all().delete()
+  Product.objects.all().delete()
+  Supplier.objects.all().delete()
+  Category.objects.all().delete()
+  
   tools = Category.objects.create(
     name='Herramientas',
     description='Herramientas para el trabajo y hogar.',
@@ -60,12 +65,20 @@ def seed():
   
   supplier1 = Supplier.objects.create(
     name='TuEmpresa C.A.',
-    description='Proveedores de productos de calidad.',
+    description='Proveedores de herramientas de calidad.',
+    category=tools,
   )
 
   supplier2 = Supplier.objects.create(
     name='MiCompañía C.A.',
-    description='Empresa encargada del transporte de productos.',
+    description='Empresa encargada de productos textiles.',
+    category=clothes,
+  )
+
+  supplier3 = Supplier.objects.create(
+    name='EmpresaInc C.A.',
+    description='Empresa encargada de electrodomésticos.',
+    category=home_appliance,
   )
   
   Movement.objects.create(
@@ -110,7 +123,7 @@ def seed():
   Movement.objects.create(
     amount=15,
     product=fridge,
-    supplier=supplier1,
+    supplier=supplier3,
   )
   
   Movement.objects.create(
