@@ -35,6 +35,21 @@ class Movement(TimeStampedModel):
   reason = models.CharField(max_length=30, null=True)
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
   supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, null=True)
+  
+  @property
+  def type(self):
+    if self.amount > 0:
+      return 'Ingreso'
+
+    return 'Salida'
+
+  @property
+  def famount(self):
+    return f"+{self.amount}" if self.type == 'Ingreso' else f"{self.amount}"
+
+  @property
+  def supplier_name(self):
+    return 'N/A' if self.supplier == None else self.supplier.name
 
   def __str__(self):
     return f"{self.product.name} {self.amount}"
