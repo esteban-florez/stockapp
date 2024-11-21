@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Proveedores{% endblock title %}
+
+{% block rightbar %}
+  <a href="#" class="btn btn-success">
+    Registrar proveedor
+  </a>
+{% endblock rightbar %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for supplier in supplier_list %}
+          <tr>
+            <td>{{ supplier.name }}</td>
+            <td>{{ supplier.category.name }}</td>
+            <td>{{ supplier.description }}</td>
+            <td>
+              <a class="btn btn-sm btn-primary" href="#">
+                Ver movimientos
+              </a>
+              <a class="btn btn-sm btn-warning" href="#">
+                Editar
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td class="text-center" colspan="3">No existen registros.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Categorías{% endblock title %}
+
+{% block rightbar %}
+  <a href="#" class="btn btn-success">
+    Registrar categoría
+  </a>
+{% endblock rightbar %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for category in category_list %}
+          <tr>
+            <td>{{ category.name }}</td>
+            <td>{{ category.description }}</td>
+            <td>
+              <a class="btn btn-sm btn-primary" href="#">
+                Ver productos
+              </a>
+              <a class="btn btn-sm btn-dark" href="#">
+                Ver proveedores
+              </a>
+              <a class="btn btn-sm btn-warning" href="#">
+                Editar
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td class="text-center" colspan="3">No existen registros.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
