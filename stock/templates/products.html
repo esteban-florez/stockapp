@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Estado de Inventario{% endblock title %}
+{% block title %}Lista de Productos{% endblock title %}
 
 {% block rightbar %}
   <a href="#" class="btn btn-success">
-    Registrar operación
+    Registrar producto
   </a>
 {% endblock rightbar %}
 
@@ -15,19 +15,23 @@
         <tr>
           <th scope="col">Producto</th>
           <th scope="col">Precio</th>
-          <th scope="col">Stock</th>
           <th scope="col">Categoría</th>
           <th scope="col">Descripción</th>
+          <th scope="col">Acciones</th>
         </tr>
       </thead>
       <tbody>
-        {% for product in products %}
+        {% for product in product_list %}
           <tr>
             <td>{{ product.name }}</td>
             <td>${{ product.price }}</td>
-            <td>{{ product.stock }} uds.</td>
             <td>{{ product.category.name }}</td>
             <td>{{ product.description }}</td>
+            <td>
+              <a class="btn btn-sm btn-warning" href="#">
+                Editar
+              </a>
+            </td>
           </tr>
         {% empty %}
           <tr>
