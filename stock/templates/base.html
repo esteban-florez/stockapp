@@ -1,0 +1,75 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html dir="ltr" lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'logo.png' %}">
+  <title>Stocked</title>
+  <link href="{% static 'vendor/css/styles.min.css' %}" rel="stylesheet">
+  <link href="{% static 'app.css' %}" rel="stylesheet">
+</head>
+
+<body>
+  <div class="preloader">
+    <div class="lds-ripple">
+      <div class="lds-pos"></div>
+      <div class="lds-pos"></div>
+    </div>
+  </div>
+  <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
+    {% include 'layout/topbar.html' %}
+    {% include 'layout/sidebar.html' %}
+    <div class="page-wrapper">
+      <div class="page-breadcrumb">
+        <div class="d-flex align-items-center justify-content-between">
+          <div>
+            <h1 class="page-title text-truncate text-dark font-weight-medium h3 mb-1">
+              {% block title %}{% endblock title %}
+            </h1>
+            {% include 'layout/breadcrumbs.html' %}
+          </div>
+          <div>
+            {% block rightbar %}{% endblock rightbar %}
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+        <div class="row">
+          {% comment %}
+            <div class="col-12">
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ alert }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+              </div>
+            </div>
+          {% endcomment %}
+          <div class="col-12">
+            <div class="card border shadow">
+              <div class="card-body">
+                {% block content %}{% endblock content %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer text-center text-muted">
+        Todos los derechos reservados | Stocked (2024)
+      </footer>
+    </div>
+  </div>
+  <script src="{% static 'vendor/js/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'vendor/js/app-style-switcher.min.js' %}"></script>
+  <script src="{% static 'vendor/js/feather.min.js' %}"></script>
+  <script src="{% static 'vendor/js/perfect-scrollbar.min.js' %}"></script>
+  <script src="{% static 'vendor/js/sidebarmenu.min.js' %}"></script>
+  <script src="{% static 'vendor/js/custom.min.js' %}"></script>
+</body>
+
+</html>

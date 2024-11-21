@@ -1,0 +1,11 @@
+<div class="d-none d-lg-flex align-items-center">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb m-0 p-0">
+      {% for link in links %}
+        <li class="breadcrumb-item{% if not forloop.last %} text-muted{% endif %}">
+          {{ link }}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+</div>

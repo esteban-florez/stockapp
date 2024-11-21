@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Existencia de Inventario{% endblock title %}
+
+{% block rightbar %}
+  <a href="#" class="btn btn-success">
+    Registrar operación
+  </a>
+{% endblock rightbar %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Producto</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Categoría</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Franela</td>
+          <td>Franela marca Nike de color azul eléctrico.</td>
+          <td>$49,25</td>
+          <td>25 uds.</td>
+          <td>Ropa</td>
+          <td class="d-flex align-items-center gap-1">
+            <a href="#" class="btn btn-sm btn-warning">Editar</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-center" colspan="5">No existen registros.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
