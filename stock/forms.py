@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Category, Supplier
+from .models import Category, Supplier, Product
 
 class UniqueNameForm(forms.Form):
   model = None
@@ -26,5 +26,12 @@ class CategoryForm(UniqueNameForm):
 class SupplierForm(UniqueNameForm):
   model = Supplier
   name = forms.CharField(max_length=20, required=True)
+  description = forms.CharField(max_length=50, required=True)
+  category = forms.ModelChoiceField(required=True, queryset=Category.objects)
+
+class ProductForm(UniqueNameForm):
+  model = Product
+  name = forms.CharField(max_length=20, required=True)
+  price = forms.FloatField(max_value=1000, min_value=0.01, required=True)
   description = forms.CharField(max_length=50, required=True)
   category = forms.ModelChoiceField(required=True, queryset=Category.objects)

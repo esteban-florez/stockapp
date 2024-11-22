@@ -2,7 +2,7 @@ from .models import Product, Movement, Supplier, Category
 from django.db.models import Sum
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect
-from .forms import CategoryForm, SupplierForm
+from .forms import CategoryForm, SupplierForm, ProductForm
 from .shortcuts import session_old, session_errors
 
 class LatestListView(ListView):
@@ -109,5 +109,31 @@ def store_supplier(request):
     request.session['errors'] = form.errors
     request.session['old'] = request.POST
     return redirect('suppliers.create')
+
+def create_product(request):
+  errors = session_errors(request)
+  old = session_old(request)
+  categories = Category.objects.all()
+
+  return render(request, 'create_product.html', {
+    'links': ['Productos', 'Registrar Producto'],
+    'errors': errors,
+    'old': old,
+    'categories': categories,
+  })
+
+def store_product(request):
+  if not request.method == 'POST':
+    return redirect('products.create')
+
+  form = ProductForm(request.POST)
+
+  if form.is_valid():
+    Product.objects.create(**form.cleaned_data)
+    return redirect('products')
+  else:
+    request.session['errors'] = form.errors
+    request.session['old'] = request.POST
+    return redirect('products.create')
 
 

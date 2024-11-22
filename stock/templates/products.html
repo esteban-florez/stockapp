@@ -3,7 +3,7 @@
 {% block title %}Lista de Productos{% endblock title %}
 
 {% block rightbar %}
-  <a href="#" class="btn btn-success">
+  <a href="{% url 'products.create' %}" class="btn btn-success">
     Registrar producto
   </a>
 {% endblock rightbar %}
