@@ -10,6 +10,12 @@ def session_old(request):
   if request.session.get('old'):
     old_copy = request.session['old'].copy()
     del request.session['old']
+
+    for key in ['category', 'product', 'supplier']:
+      val = old_copy.get(key)
+      if val:
+        old_copy[key] = int(val)
+
     return old_copy
   else:
     return None

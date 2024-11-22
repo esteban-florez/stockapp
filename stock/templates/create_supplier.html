@@ -26,7 +26,7 @@
           <select class="form-select {% if errors.category %} is-invalid{% endif %}" name="category" id="category" required>
             <option value="">Seleccionar...</option>
             {% for category in categories %}
-              <option value="{{ category.id }}" {% if category.id == old.category %}selected{% endif %}>{{ category.name }}</option>
+              <option value="{{ category.id }}"{% if category.id == old.category %}selected{% endif %}>{{ category.name }}</option>
             {% endfor %}
           </select>
           <p class="invalid-feedback">{{ errors.category.0 }}</p>
