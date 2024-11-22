@@ -9,7 +9,7 @@
       <div class="col-lg-6">
         <div class="form-group mb-3">
           <label class="form-label" for="name">Nombre</label>
-          <input class="form-control{% if errors.name %} is-invalid{% endif %}" name="name" id="name" placeholder="Introduce el nombre..." maxlength="20" required />
+          <input class="form-control{% if errors.name %} is-invalid{% endif %}" name="name" id="name" placeholder="Introduce el nombre..." maxlength="20" required value="{{ old.name }}" />
           <p class="invalid-feedback">{{ errors.name.0 }}</p>
         </div>
       </div>
@@ -17,7 +17,7 @@
         <div class="form-group mb-3">
           <div class="form-group mb-3">
             <label class="form-label" for="description">Descripción</label>
-            <input class="form-control {% if errors.name %} is-invalid{% endif %}" name="description" id="description" placeholder="Introduce la descripción..." maxlength="50" required />
+            <input class="form-control {% if errors.description %} is-invalid{% endif %}" name="description" id="description" placeholder="Introduce la descripción..." maxlength="50" required value="{{ old.description }}" />
             <p class="invalid-feedback">{{ errors.description.0 }}</p>
           </div>
         </div>

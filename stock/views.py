@@ -3,6 +3,7 @@ from django.db.models import Sum
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect
 from .forms import CategoryForm
+from .shortcuts import session_old, session_errors
 
 class LatestListView(ListView):
   class Meta:
@@ -61,10 +62,12 @@ class CategoryListView(LatestListView):
 
 def create_category(request):
   errors = session_errors(request)
+  old = session_old(request)
 
   return render(request, 'create_category.html', {
     'links': ['Categorías', 'Registrar Categoría'],
     'errors': errors,
+    'old': old,
   })
 
 def store_category(request):
@@ -78,12 +81,6 @@ def store_category(request):
     return redirect('categories')
   else:
     request.session['errors'] = form.errors
+    request.session['old'] = request.POST
     return redirect('categories.create')
 
-def session_errors(request):
-  if request.session.get('errors'):
-    errors_copy = request.session['errors'].copy()
-    del request.session['errors']
-    return errors_copy
-  else:
-    return None
