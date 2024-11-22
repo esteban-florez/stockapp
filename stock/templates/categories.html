@@ -3,7 +3,7 @@
 {% block title %}Lista de Categorías{% endblock title %}
 
 {% block rightbar %}
-  <a href="#" class="btn btn-success">
+  <a href="{% url 'categories.create' %}" class="btn btn-success">
     Registrar categoría
   </a>
 {% endblock rightbar %}
@@ -25,10 +25,10 @@
             <td>{{ category.description }}</td>
             <td>
               <a class="btn btn-sm btn-primary" href="#">
-                Ver productos
+                Productos
               </a>
               <a class="btn btn-sm btn-dark" href="#">
-                Ver proveedores
+                Proveedores
               </a>
               <a class="btn btn-sm btn-warning" href="#">
                 Editar

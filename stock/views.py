@@ -1,6 +1,8 @@
 from .models import Product, Movement, Supplier, Category
 from django.db.models import Sum
 from django.views.generic.list import ListView
+from django.shortcuts import render, redirect
+from .forms import CategoryForm
 
 class LatestListView(ListView):
   class Meta:
@@ -32,7 +34,7 @@ class MovementListView(LatestListView):
 
 class ProductListView(LatestListView):
   model = Product
-  template_name = "products.html"
+  template_name = 'products.html'
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
@@ -41,7 +43,7 @@ class ProductListView(LatestListView):
 
 class SupplierListView(LatestListView):
   model = Supplier
-  template_name = "suppliers.html"
+  template_name = 'suppliers.html'
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
@@ -50,11 +52,38 @@ class SupplierListView(LatestListView):
 
 class CategoryListView(LatestListView):
   model = Category
-  template_name = "categories.html"
+  template_name = 'categories.html'
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
     context['links'] = ['Categorías', 'Lista de Categorías']
     return context
 
+def create_category(request):
+  errors = session_errors(request)
 
+  return render(request, 'create_category.html', {
+    'links': ['Categorías', 'Registrar Categoría'],
+    'errors': errors,
+  })
+
+def store_category(request):
+  if not request.method == 'POST':
+    return redirect('categories.create')
+
+  form = CategoryForm(request.POST)
+
+  if form.is_valid():
+    Category.objects.create(**form.cleaned_data)
+    return redirect('categories')
+  else:
+    request.session['errors'] = form.errors
+    return redirect('categories.create')
+
+def session_errors(request):
+  if request.session.get('errors'):
+    errors_copy = request.session['errors'].copy()
+    del request.session['errors']
+    return errors_copy
+  else:
+    return None

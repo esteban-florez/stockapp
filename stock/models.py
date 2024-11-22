@@ -8,15 +8,15 @@ class TimeStampedModel(models.Model):
       abstract = True
 
 class Category(TimeStampedModel):
-  name = models.CharField(max_length=20)
-  description = models.CharField(max_length=255)
+  name = models.CharField(max_length=20, unique=True)
+  description = models.CharField(max_length=50)
 
   def __str__(self):
     return f"{self.name}"
 
 class Product(TimeStampedModel):
-  name = models.CharField(max_length=30)
-  description = models.CharField(max_length=255)
+  name = models.CharField(max_length=20, unique=True)
+  description = models.CharField(max_length=50)
   price = models.FloatField()
   category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
@@ -24,8 +24,8 @@ class Product(TimeStampedModel):
     return f"{self.name}"
 
 class Supplier(TimeStampedModel):
-  name = models.CharField(max_length=30)
-  description = models.CharField(max_length=255)
+  name = models.CharField(max_length=20, unique=True)
+  description = models.CharField(max_length=50)
   category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
   def __str__(self):
