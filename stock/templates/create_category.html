@@ -17,7 +17,8 @@
         <div class="form-group mb-3">
           <div class="form-group mb-3">
             <label class="form-label" for="description">Descripción</label>
-            <input class="form-control" name="description" id="description" placeholder="Introduce la descripción..." maxlength="50" required />
+            <input class="form-control {% if errors.name %} is-invalid{% endif %}" name="description" id="description" placeholder="Introduce la descripción..." maxlength="50" required />
+            <p class="invalid-feedback">{{ errors.description.0 }}</p>
           </div>
         </div>
       </div>
