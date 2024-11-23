@@ -11,6 +11,7 @@
   <title>Stocked</title>
   <link href="{% static 'vendor/css/styles.min.css' %}" rel="stylesheet">
   <link href="{% static 'app.css' %}" rel="stylesheet">
+  {% block headjs %}{% endblock headjs %}
 </head>
 
 <body>
@@ -70,6 +71,7 @@
   <script src="{% static 'vendor/js/perfect-scrollbar.min.js' %}"></script>
   <script src="{% static 'vendor/js/sidebarmenu.min.js' %}"></script>
   <script src="{% static 'vendor/js/custom.min.js' %}"></script>
+  {% block js %}{% endblock js %}
 </body>
 
 </html>

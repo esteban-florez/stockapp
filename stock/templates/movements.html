@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
-{% block title %}Historial de Inventario{% endblock title %}
+{% block title %}Lista de Movimientos{% endblock title %}
 
 {% block rightbar %}
-  <a href="#" class="btn btn-success">
-    Registrar operación
+  <a href="{% url 'movements.create' %}" class="btn btn-success">
+    Registrar movimiento
   </a>
 {% endblock rightbar %}
 

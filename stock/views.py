@@ -2,7 +2,7 @@ from .models import Product, Movement, Supplier, Category
 from django.db.models import Sum
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect
-from .forms import CategoryForm, SupplierForm, ProductForm
+from .forms import CategoryForm, SupplierForm, ProductForm, MovementForm
 from .shortcuts import session_old, session_errors
 
 class LatestListView(ListView):
@@ -30,7 +30,7 @@ class MovementListView(LatestListView):
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
-    context['links'] = ['Inicio', 'Historial de Inventario']
+    context['links'] = ['Movimientos', 'Lista de Movimientos']
     return context
 
 class ProductListView(LatestListView):
@@ -136,4 +136,33 @@ def store_product(request):
     request.session['old'] = request.POST
     return redirect('products.create')
 
+
+def create_movement(request):
+  errors = session_errors(request)
+  old = session_old(request)
+  queryset = Product.objects.annotate(stock=Sum('movement__amount')).filter(stock__gt=0)
+  products = list(queryset.values('id', 'name', 'stock'))
+  suppliers = Supplier.objects.all()
+
+  return render(request, 'create_movement.html', {
+    'links': ['Movimientos', 'Registrar Movimiento'],
+    'errors': errors,
+    'old': old,
+    'products': products,
+    'suppliers': suppliers,
+  })
+
+def store_movement(request):
+  if not request.method == 'POST':
+    return redirect('movements.create')
+
+  form = MovementForm(request.POST)
+
+  if form.is_valid():
+    Movement.objects.create(**form.cleaned_data)
+    return redirect('movements')
+  else:
+    request.session['errors'] = form.errors
+    request.session['old'] = request.POST
+  return redirect('movements.create')
 
