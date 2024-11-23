@@ -1,7 +1,8 @@
 from .models import Product, Movement, Supplier, Category
 from django.db.models import Sum
+from django.urls import reverse
 from django.views.generic.list import ListView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CategoryForm, SupplierForm, ProductForm, MovementForm
 from .shortcuts import session_old, session_errors
 
@@ -63,11 +64,13 @@ class CategoryListView(LatestListView):
 def create_category(request):
   errors = session_errors(request)
   old = session_old(request)
+  action = reverse('categories.store')
 
   return render(request, 'create_category.html', {
     'links': ['Categorías', 'Registrar Categoría'],
     'errors': errors,
     'old': old,
+    'action': action,
   })
 
 def store_category(request):
@@ -83,6 +86,36 @@ def store_category(request):
     request.session['errors'] = form.errors
     request.session['old'] = request.POST
     return redirect('categories.create')
+
+def edit_category(request, category_id):
+  category = get_object_or_404(Category, pk=category_id)
+  errors = session_errors(request)
+  old = session_old(request)
+  action = reverse('categories.update', args=[category_id])
+
+  return render(request, 'edit_category.html', {
+    'links': ['Categorías', 'Editar Categoría'],
+    'category': category,
+    'errors': errors,
+    'old': old,
+    'action': action,
+  })
+
+def update_category(request, category_id):
+  category = get_object_or_404(Category, pk=category_id)
+
+  if not request.method == 'POST':
+    return redirect('categories.edit', category_id=category.id)
+
+  form = CategoryForm(request.POST, exclude=category_id)
+
+  if form.is_valid():
+    Category.objects.filter(id=category_id).update(**form.cleaned_data)
+    return redirect('categories')
+  else:
+    request.session['errors'] = form.errors
+    request.session['old'] = request.POST
+    return redirect('categories.edit', category_id=category.id)
 
 def create_supplier(request):
   errors = session_errors(request)

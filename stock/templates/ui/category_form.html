@@ -1,0 +1,27 @@
+{% load value %}
+
+<form class="contents" action="{{ action }}" method="POST">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="form-group mb-3">
+        <label class="form-label" for="name">Nombre</label>
+        <input class="form-control{% if errors.name %} is-invalid{% endif %}" name="name" id="name" placeholder="Introduce el nombre..." maxlength="20" required value="{% value category 'name' %}" />
+        <p class="invalid-feedback">{{ errors.name.0 }}</p>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="form-group mb-3">
+        <div class="form-group mb-3">
+          <label class="form-label" for="description">Descripción</label>
+          <input class="form-control {% if errors.description %} is-invalid{% endif %}" name="description" id="description" placeholder="Introduce la descripción..." maxlength="50" required value="{% value category 'description' %}" />
+          <p class="invalid-feedback">{{ errors.description.0 }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12 d-flex gap-2 mt-3">
+      <button type="submit" class="btn btn-success">Aceptar</button>
+      <a href="{% url 'categories' %}" class="btn btn-light">Volver</a>
+    </div>
+  </div>
+</form>

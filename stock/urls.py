@@ -15,4 +15,14 @@ urlpatterns = [
     path('categories', views.CategoryListView.as_view(), name='categories'),
     path('categories/create', views.create_category, name='categories.create'),
     path('categories/store', views.store_category, name='categories.store'),
+    path(
+      'categories/<int:category_id>/edit',
+      views.edit_category,
+      name='categories.edit'
+    ),
+    path(
+      'categories/<int:category_id>/update',
+      views.update_category,
+      name='categories.update'
+    ),
 ]
