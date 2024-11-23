@@ -33,14 +33,14 @@
           <select class="form-select {% if errors.category %} is-invalid{% endif %}" name="category" id="category" required>
             <option value="">Seleccionar...</option>
             {% for category in categories %}
-              <option value="{{ category.id }}" {% if category.id == int(old.category) %}selected{% endif %}>{{ category.name }}</option>
+              <option value="{{ category.id }}" {% if category.id == old.category %}selected{% endif %}>{{ category.name }}</option>
             {% endfor %}
           </select>
           <p class="invalid-feedback">{{ errors.category.0 }}</p>
         </div>
       </div>
       <div class="col-lg-12 d-flex gap-2 mt-3">
-        <button type="submit" class="btn btn-success">Registrar</button>
+        <button type="submit" class="btn btn-success">Aceptar</button>
         <a href="{% url 'products' %}" class="btn btn-light">Volver</a>
       </div>
     </div>
