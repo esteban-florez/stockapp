@@ -5,19 +5,30 @@ from .models import Category, Supplier, Product, Movement
 
 class UniqueNameForm(forms.Form):
   model = None
+  exclude = None
+
+  def __init__(self, data, exclude=None, **kwargs):
+    kwargs['data'] = data
+    super().__init__(**kwargs)
+    self.exclude = exclude
 
   def clean(self):
     cleaned_data = super().clean()
     name = cleaned_data.get('name')
 
-    if name:
-      if self.model.objects.filter(name=name).exists():
-        error = ValidationError('Ya existe un registro con ese nombre.')
-
-        self.add_error(field='name', error=error)
-    else:
+    if not name:
       return cleaned_data
-  
+
+    queryset = self.model.objects.filter(name=name)
+
+    if self.exclude:
+      queryset = queryset.exclude(id=self.exclude)
+
+    if not queryset.exists():
+      return cleaned_data
+
+    error = ValidationError('Ya existe un registro con ese nombre.')
+    self.add_error(field='name', error=error)
 
 class CategoryForm(UniqueNameForm):
   model = Category
