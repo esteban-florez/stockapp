@@ -1,9 +1,12 @@
-from .models import Product, Movement, Supplier, Category
 from django.db.models import Sum
+from django.http import HttpResponse
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
+from weasyprint import HTML
 from .forms import CategoryForm, SupplierForm, ProductForm, MovementForm
+from .models import Product, Movement, Supplier, Category
 from .shortcuts import session_old, session_errors
 
 class LatestListView(ListView):
@@ -267,3 +270,15 @@ def store_movement(request):
     request.session['old'] = request.POST
   return redirect('movements.create')
 
+def inventory_pdf(request):
+  products = Product.objects.order_by('-created_at').annotate(stock=Sum('movement__amount'))
+
+  template = render_to_string('pdf.html', {
+    'product_list': products,
+  })
+
+  pdf = HTML(string=template).write_pdf()
+  response = HttpResponse(pdf, content_type='application/pdf')
+
+  response['Content-Disposition'] = 'filename="Inventario.pdf"'
+  return response
