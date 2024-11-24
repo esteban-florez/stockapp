@@ -121,12 +121,14 @@ def create_supplier(request):
   errors = session_errors(request)
   old = session_old(request)
   categories = Category.objects.all()
+  action = reverse('suppliers.store')
 
   return render(request, 'create_supplier.html', {
     'links': ['Proveedores', 'Registrar Proveedor'],
     'errors': errors,
     'old': old,
     'categories': categories,
+    'action': action,
   })
 
 def store_supplier(request):
@@ -142,6 +144,38 @@ def store_supplier(request):
     request.session['errors'] = form.errors
     request.session['old'] = request.POST
     return redirect('suppliers.create')
+
+
+def edit_supplier(request, supplier_id):
+  supplier = get_object_or_404(Supplier, pk=supplier_id)
+  errors = session_errors(request)
+  old = session_old(request)
+  action = reverse('suppliers.update', args=[supplier_id])
+
+  return render(request, 'edit_supplier.html', {
+    'links': ['Proveedores', 'Editar Proveedor'],
+    'supplier': supplier,
+    'errors': errors,
+    'old': old,
+    'action': action,
+    'categories': Category.objects.all(),
+  })
+
+def update_supplier(request, supplier_id):
+  supplier = get_object_or_404(Supplier, pk=supplier_id)
+
+  if not request.method == 'POST':
+    return redirect('suppliers.edit', supplier_id=supplier.id)
+
+  form = SupplierForm(request.POST, exclude=supplier_id)
+
+  if form.is_valid():
+    Supplier.objects.filter(id=supplier_id).update(**form.cleaned_data)
+    return redirect('suppliers')
+  else:
+    request.session['errors'] = form.errors
+    request.session['old'] = request.POST
+    return redirect('suppliers.edit', supplier_id=supplier.id)
 
 def create_product(request):
   errors = session_errors(request)

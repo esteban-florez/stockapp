@@ -12,6 +12,16 @@ urlpatterns = [
     path('suppliers', views.SupplierListView.as_view(), name='suppliers'),
     path('suppliers/create', views.create_supplier, name='suppliers.create'),
     path('suppliers/store', views.store_supplier, name='suppliers.store'),
+    path(
+      'suppliers/<int:supplier_id>/edit',
+      views.edit_supplier,
+      name='suppliers.edit'
+    ),
+    path(
+      'suppliers/<int:supplier_id>/store',
+      views.update_supplier,
+      name='suppliers.update'
+    ),
     path('categories', views.CategoryListView.as_view(), name='categories'),
     path('categories/create', views.create_category, name='categories.create'),
     path('categories/store', views.store_category, name='categories.store'),
