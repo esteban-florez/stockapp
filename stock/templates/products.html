@@ -28,7 +28,7 @@
             <td>{{ product.category.name }}</td>
             <td>{{ product.description }}</td>
             <td>
-              <a class="btn btn-sm btn-warning" href="#">
+              <a class="btn btn-sm btn-warning" href="{% url 'products.edit' product.id %}">
                 Editar
               </a>
             </td>

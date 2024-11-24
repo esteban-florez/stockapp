@@ -150,6 +150,7 @@ def edit_supplier(request, supplier_id):
   supplier = get_object_or_404(Supplier, pk=supplier_id)
   errors = session_errors(request)
   old = session_old(request)
+  categories = Category.objects.all()
   action = reverse('suppliers.update', args=[supplier_id])
 
   return render(request, 'edit_supplier.html', {
@@ -158,7 +159,7 @@ def edit_supplier(request, supplier_id):
     'errors': errors,
     'old': old,
     'action': action,
-    'categories': Category.objects.all(),
+    'categories': categories,
   })
 
 def update_supplier(request, supplier_id):
@@ -181,12 +182,14 @@ def create_product(request):
   errors = session_errors(request)
   old = session_old(request)
   categories = Category.objects.all()
+  action = reverse('products.store')
 
   return render(request, 'create_product.html', {
     'links': ['Productos', 'Registrar Producto'],
     'errors': errors,
     'old': old,
     'categories': categories,
+    'action': action,
   })
 
 def store_product(request):
@@ -203,6 +206,37 @@ def store_product(request):
     request.session['old'] = request.POST
     return redirect('products.create')
 
+def edit_product(request, product_id):
+  product = get_object_or_404(Product, pk=product_id)
+  errors = session_errors(request)
+  old = session_old(request)
+  categories = Category.objects.all()
+  action = reverse('products.update', args=[product_id])
+
+  return render(request, 'edit_product.html', {
+    'links': ['Productos', 'Editar Producto'],
+    'product': product,
+    'errors': errors,
+    'old': old,
+    'action': action,
+    'categories': categories,
+  })
+
+def update_product(request, product_id):
+  product = get_object_or_404(Product, pk=product_id)
+
+  if not request.method == 'POST':
+    return redirect('products.edit', product_id=product.id)
+
+  form = ProductForm(request.POST, exclude=product_id)
+
+  if form.is_valid():
+    Product.objects.filter(id=product_id).update(**form.cleaned_data)
+    return redirect('products')
+  else:
+    request.session['errors'] = form.errors
+    request.session['old'] = request.POST
+    return redirect('products.edit', product_id=product.id)
 
 def create_movement(request):
   errors = session_errors(request)

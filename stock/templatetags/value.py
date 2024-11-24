@@ -4,14 +4,15 @@ register = template.Library()
 
 @register.simple_tag(takes_context=True)
 def value(context, model, prop):
-  if model:
-    return getattr(model, prop)
   old = context.get('old')
-  if old:
-    val = old.get(prop)
-    return val if val else ''
+  value = ''
 
-  return ''
+  if old and old.get(prop):
+    value = old.get(prop)
+  elif model:
+    value = getattr(model, prop)
+
+  return value
   
 @register.simple_tag(takes_context=True)
 def selected(context, model, prop, value):

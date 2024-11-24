@@ -3,46 +3,5 @@
 {% block title %}Registrar Producto{% endblock title %}
 
 {% block content %}
-  <form class="contents" action="{% url 'products.store' %}" method="POST">
-    {% csrf_token %}
-    <div class="row">
-      <div class="col-lg-6">
-        <div class="form-group mb-3">
-          <label class="form-label" for="name">Nombre</label>
-          <input class="form-control{% if errors.name %} is-invalid{% endif %}" name="name" id="name" placeholder="Introduce el nombre..." maxlength="20" required value="{{ old.name }}" />
-          <p class="invalid-feedback">{{ errors.name.0 }}</p>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="form-group mb-3">
-          <label class="form-label" for="price">Precio</label>
-          <input type="number" class="form-control{% if errors.price %} is-invalid{% endif %}" name="price" id="price" placeholder="Introduce el precio..." max="1000" min="0.01" step="0.01" required value="{{ old.price }}" />
-          <p class="invalid-feedback">{{ errors.price.0 }}</p>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="form-group mb-3">
-          <label class="form-label" for="description">Descripción</label>
-          <input class="form-control {% if errors.description %} is-invalid{% endif %}" name="description" id="description" placeholder="Introduce la descripción..." maxlength="50" required value="{{ old.description }}" />
-          <p class="invalid-feedback">{{ errors.description.0 }}</p>
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="form-group mb-3">
-          <label class="form-label" for="category">Categoría</label>
-          <select class="form-select {% if errors.category %} is-invalid{% endif %}" name="category" id="category" required>
-            <option value="">Seleccionar...</option>
-            {% for category in categories %}
-              <option value="{{ category.id }}" {% if category.id == old.category %}selected{% endif %}>{{ category.name }}</option>
-            {% endfor %}
-          </select>
-          <p class="invalid-feedback">{{ errors.category.0 }}</p>
-        </div>
-      </div>
-      <div class="col-lg-12 d-flex gap-2 mt-3">
-        <button type="submit" class="btn btn-success">Aceptar</button>
-        <a href="{% url 'products' %}" class="btn btn-light">Volver</a>
-      </div>
-    </div>
-  </form>
+  {% include 'ui/product_form.html' with product=None %}
 {% endblock content %}
