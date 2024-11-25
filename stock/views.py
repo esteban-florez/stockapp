@@ -1,5 +1,5 @@
 from django.db.models import Sum
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect, get_object_or_404
@@ -85,10 +85,10 @@ def store_category(request):
   if form.is_valid():
     Category.objects.create(**form.cleaned_data)
     return redirect('categories')
-  else:
-    request.session['errors'] = form.errors
-    request.session['old'] = request.POST
-    return redirect('categories.create')
+
+  request.session['errors'] = form.errors
+  request.session['old'] = request.POST
+  return redirect('categories.create')
 
 def edit_category(request, category_id):
   category = get_object_or_404(Category, pk=category_id)
@@ -115,10 +115,10 @@ def update_category(request, category_id):
   if form.is_valid():
     Category.objects.filter(id=category_id).update(**form.cleaned_data)
     return redirect('categories')
-  else:
-    request.session['errors'] = form.errors
-    request.session['old'] = request.POST
-    return redirect('categories.edit', category_id=category.id)
+
+  request.session['errors'] = form.errors
+  request.session['old'] = request.POST
+  return redirect('categories.edit', category_id=category.id)
 
 def create_supplier(request):
   errors = session_errors(request)
@@ -143,10 +143,10 @@ def store_supplier(request):
   if form.is_valid():
     Supplier.objects.create(**form.cleaned_data)
     return redirect('suppliers')
-  else:
-    request.session['errors'] = form.errors
-    request.session['old'] = request.POST
-    return redirect('suppliers.create')
+
+  request.session['errors'] = form.errors
+  request.session['old'] = request.POST
+  return redirect('suppliers.create')
 
 
 def edit_supplier(request, supplier_id):
@@ -176,10 +176,10 @@ def update_supplier(request, supplier_id):
   if form.is_valid():
     Supplier.objects.filter(id=supplier_id).update(**form.cleaned_data)
     return redirect('suppliers')
-  else:
-    request.session['errors'] = form.errors
-    request.session['old'] = request.POST
-    return redirect('suppliers.edit', supplier_id=supplier.id)
+
+  request.session['errors'] = form.errors
+  request.session['old'] = request.POST
+  return redirect('suppliers.edit', supplier_id=supplier.id)
 
 def create_product(request):
   errors = session_errors(request)
@@ -204,10 +204,10 @@ def store_product(request):
   if form.is_valid():
     Product.objects.create(**form.cleaned_data)
     return redirect('products')
-  else:
-    request.session['errors'] = form.errors
-    request.session['old'] = request.POST
-    return redirect('products.create')
+
+  request.session['errors'] = form.errors
+  request.session['old'] = request.POST
+  return redirect('products.create')
 
 def edit_product(request, product_id):
   product = get_object_or_404(Product, pk=product_id)
@@ -236,10 +236,10 @@ def update_product(request, product_id):
   if form.is_valid():
     Product.objects.filter(id=product_id).update(**form.cleaned_data)
     return redirect('products')
-  else:
-    request.session['errors'] = form.errors
-    request.session['old'] = request.POST
-    return redirect('products.edit', product_id=product.id)
+
+  request.session['errors'] = form.errors
+  request.session['old'] = request.POST
+  return redirect('products.edit', product_id=product.id)
 
 def create_movement(request):
   errors = session_errors(request)
@@ -265,9 +265,9 @@ def store_movement(request):
   if form.is_valid():
     Movement.objects.create(**form.cleaned_data)
     return redirect('movements')
-  else:
-    request.session['errors'] = form.errors
-    request.session['old'] = request.POST
+
+  request.session['errors'] = form.errors
+  request.session['old'] = request.POST
   return redirect('movements.create')
 
 def inventory_pdf(request):
