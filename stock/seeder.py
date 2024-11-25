@@ -1,10 +1,11 @@
-from stock.models import Category, Movement, Product, Supplier
+from stock.models import Category, Movement, Product, Supplier, User
 
 def seed():
   Movement.objects.all().delete()
   Product.objects.all().delete()
   Supplier.objects.all().delete()
   Category.objects.all().delete()
+  User.objects.all().delete()
   
   tools = Category.objects.create(
     name='Herramientas',
@@ -141,4 +142,10 @@ def seed():
   Movement.objects.create(
     amount=-5,
     product=pants,
+  )
+
+  User.objects.create_user(
+    name='Luis Pérez',
+    email='luis@ejemplo.com',
+    password='pass1234',
   )
