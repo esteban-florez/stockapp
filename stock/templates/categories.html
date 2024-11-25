@@ -24,12 +24,12 @@
             <td>{{ category.name }}</td>
             <td>{{ category.description }}</td>
             <td>
-              <a class="btn btn-sm btn-primary" href="#">
+              {% comment %} <a class="btn btn-sm btn-primary" href="#">
                 Productos
               </a>
               <a class="btn btn-sm btn-dark" href="#">
                 Proveedores
-              </a>
+              </a> {% endcomment %}
               <a class="btn btn-sm btn-warning" href="{% url 'categories.edit' category.id %}">
                 Editar
               </a>
