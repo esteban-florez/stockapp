@@ -106,3 +106,11 @@ class RegisterForm(forms.Form):
 
     error = ValidationError('Ya existe un usuario con este correo electŕonico.')
     self.add_error(field='email', error=error)
+
+class LoginForm(forms.Form):
+  email = forms.EmailField(required=True)
+  password = forms.CharField(max_length=20, required=True)
+  
+  def add_credentials_error(self):
+    error = ValidationError('El correo o la contraseña son incorrectos.')
+    self.add_error(field='email', error=error)

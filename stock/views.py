@@ -1,12 +1,12 @@
 from django.db.models import Sum
 from django.http import HttpResponse, Http404
-from django.contrib.auth import login as login_user
+from django.contrib.auth import authenticate, login as login_user
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from weasyprint import HTML
-from .forms import CategoryForm, SupplierForm, ProductForm, MovementForm, RegisterForm
+from .forms import CategoryForm, SupplierForm, ProductForm, MovementForm, RegisterForm, LoginForm
 from .models import Product, Movement, Supplier, Category, User
 from .shortcuts import session_old, session_errors
 
@@ -296,6 +296,20 @@ def login(request):
       'errors': errors,
       'old': old,
     })
+
+  form = LoginForm(request.POST)
+
+  if form.is_valid():
+    user = authenticate(request, **form.cleaned_data)
+    if user:
+      login_user(request, user)
+      return redirect('index')
+
+    form.add_credentials_error()
+
+  request.session['errors'] = form.errors
+  request.session['old'] = request.POST
+  return redirect('login')
 
 def register(request):
   if request.method != 'POST' and request.method != 'GET':
