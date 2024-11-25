@@ -29,11 +29,7 @@
       </ul>
       <ul class="navbar-nav me-4">
         <li class="nav-item">
-          {% if user.is_authenticated %}
-            {{ user.name }}
-          {% else %}
-            <a class="text-dark text-decoration-underline" href="{% url 'login' %}">Iniciar Sesión</a>
-          {% endif %}
+          {{ user.name }}
         </li>
       </ul>
     </div>

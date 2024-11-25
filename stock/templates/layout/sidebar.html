@@ -105,7 +105,15 @@
             </li>
           </ul>
         </li>
-
+        <li class="sidebar-item">
+          <a class="sidebar-link" href="javascript:void(0)" aria-expanded="false" onclick="document.querySelector('#logout').submit()">
+            <i data-feather="log-out" class="feather-icon text-danger"></i>
+            <span class="hide-menu pt-1 text-danger">Cerrar Sesión</span>
+          </a>
+        </li>
+        <form action="{% url 'logout' %}" method="POST" id="logout">
+          {% csrf_token %}
+        </form>
       </ul>
     </nav>
   </div>

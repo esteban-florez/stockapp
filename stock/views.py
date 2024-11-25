@@ -1,6 +1,7 @@
 from django.db.models import Sum
 from django.http import HttpResponse, Http404
-from django.contrib.auth import authenticate, login as login_user
+from django.contrib import auth
+from django.contrib.auth.decorators import login_not_required
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect, get_object_or_404
@@ -284,9 +285,13 @@ def inventory_pdf(request):
   response['Content-Disposition'] = 'filename="Inventario.pdf"'
   return response
 
+@login_not_required
 def login(request):
   if request.method != 'POST' and request.method != 'GET':
     return Http404()
+  
+  if request.user.is_authenticated:
+    return redirect('index')
 
   if request.method == 'GET':
     errors = session_errors(request)
@@ -300,9 +305,9 @@ def login(request):
   form = LoginForm(request.POST)
 
   if form.is_valid():
-    user = authenticate(request, **form.cleaned_data)
+    user = auth.authenticate(request, **form.cleaned_data)
     if user:
-      login_user(request, user)
+      auth.login(request, user)
       return redirect('index')
 
     form.add_credentials_error()
@@ -311,9 +316,13 @@ def login(request):
   request.session['old'] = request.POST
   return redirect('login')
 
+@login_not_required
 def register(request):
   if request.method != 'POST' and request.method != 'GET':
     return Http404()
+  
+  if request.user.is_authenticated:
+    return redirect('index')
 
   if request.method == 'GET':
     errors = session_errors(request)
@@ -328,9 +337,16 @@ def register(request):
 
   if form.is_valid():
     user = User.objects.create_user(**form.cleaned_data)
-    login_user(request, user)
+    auth.login(request, user)
     return redirect('index')
 
   request.session['errors'] = form.errors
   request.session['old'] = request.POST
   return redirect('register')
+
+def logout(request):
+  if request.method != 'POST':
+    return Http404()
+
+  auth.logout(request)
+  return redirect('login')
