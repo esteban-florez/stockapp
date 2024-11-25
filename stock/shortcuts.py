@@ -16,7 +16,9 @@ def session_old(request):
       if val:
         old_copy[key] = int(val)
 
-    del old_copy['password']
+    if old_copy.get('password'):
+      del old_copy['password']
+
     return old_copy
   else:
     return None

@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from .models import Category, Supplier, Product, Movement, User
 
 class UniqueNameForm(forms.Form):
@@ -51,7 +52,7 @@ class ProductForm(UniqueNameForm):
 class MovementForm(forms.Form):
   type = forms.ChoiceField(choices=[('plus', 'Ingreso'), ('minus', 'Salida')], required=True)
   amount = forms.IntegerField(min_value=1, required=True)
-  reason = forms.CharField(max_length=30, required=False)
+  reason = forms.CharField(max_length=50, required=False)
   product = forms.ModelChoiceField(
     required=True,
     queryset=Product.objects.annotate(stock=Sum('movement__amount')).filter(stock__gt=0)
@@ -67,7 +68,8 @@ class MovementForm(forms.Form):
 
     product = cleaned_data.get('product')
     amount = cleaned_data.get('amount')
-    agg = Movement.objects.filter(product_id=product.id).aggregate(value=Sum('amount'))
+    sum_query = Coalesce(Sum('amount'), 0)
+    agg = Movement.objects.filter(product_id=product.id).aggregate(value=sum_query)
     mov_sum = agg.get('value')
     exceeding_amount = amount and product and type == 'minus' and amount > mov_sum
 

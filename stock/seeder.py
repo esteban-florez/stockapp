@@ -145,7 +145,7 @@ def seed():
   )
 
   User.objects.create_user(
-    name='Luis Pérez',
-    email='luis@ejemplo.com',
+    name='Juan Pérez',
+    email='correo@ejemplo.com',
     password='pass1234',
   )

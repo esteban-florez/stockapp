@@ -18,8 +18,10 @@ document.addEventListener('alpine:init', () => {
       const products = JSON.parse(document.querySelector('#products-data').textContent)
       const old = JSON.parse(document.querySelector('#old-data').textContent)
 
-      this.selected = old.product
-      this.type = old.type
+      if (old) {
+        this.selected = old.product
+        this.type = old.type
+      }
 
       products.forEach(product => {
         this.products.set(product.id, product)

@@ -1,6 +1,7 @@
 from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from django.http import HttpResponse, Http404
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_not_required
 from django.urls import reverse
 from django.views.generic.list import ListView
@@ -23,7 +24,8 @@ class StockListView(LatestListView):
   template_name = 'index.html'
   
   def get_queryset(self):
-    return super().get_queryset().annotate(stock=Sum('movement__amount'))
+    sum_query = Coalesce(Sum('movement__amount'), 0)
+    return super().get_queryset().annotate(stock=sum_query)
 
   def get_context_data(self, **kwargs):
     context = super().get_context_data(**kwargs)
@@ -86,6 +88,7 @@ def store_category(request):
 
   if form.is_valid():
     Category.objects.create(**form.cleaned_data)
+    messages.add_message(request, messages.SUCCESS, 'La categoría se ha registrado exitosamente.')
     return redirect('categories')
 
   request.session['errors'] = form.errors
@@ -116,6 +119,7 @@ def update_category(request, category_id):
 
   if form.is_valid():
     Category.objects.filter(id=category_id).update(**form.cleaned_data)
+    messages.add_message(request, messages.SUCCESS, 'La categoría se actualizado exitosamente.')
     return redirect('categories')
 
   request.session['errors'] = form.errors
@@ -144,6 +148,7 @@ def store_supplier(request):
 
   if form.is_valid():
     Supplier.objects.create(**form.cleaned_data)
+    messages.add_message(request, messages.SUCCESS, 'El proveedor se ha creado exitosamente.')
     return redirect('suppliers')
 
   request.session['errors'] = form.errors
@@ -177,6 +182,7 @@ def update_supplier(request, supplier_id):
 
   if form.is_valid():
     Supplier.objects.filter(id=supplier_id).update(**form.cleaned_data)
+    messages.add_message(request, messages.SUCCESS, 'El proveedor se ha actualizado exitosamente.')
     return redirect('suppliers')
 
   request.session['errors'] = form.errors
@@ -205,6 +211,7 @@ def store_product(request):
 
   if form.is_valid():
     Product.objects.create(**form.cleaned_data)
+    messages.add_message(request, messages.SUCCESS, 'El producto se ha registrado exitosamente.')
     return redirect('products')
 
   request.session['errors'] = form.errors
@@ -237,6 +244,7 @@ def update_product(request, product_id):
 
   if form.is_valid():
     Product.objects.filter(id=product_id).update(**form.cleaned_data)
+    messages.add_message(request, messages.SUCCESS, 'El producto se ha actualizado exitosamente.')
     return redirect('products')
 
   request.session['errors'] = form.errors
@@ -246,7 +254,8 @@ def update_product(request, product_id):
 def create_movement(request):
   errors = session_errors(request)
   old = session_old(request)
-  queryset = Product.objects.annotate(stock=Sum('movement__amount')).filter(stock__gt=0)
+  sum_query = Coalesce(Sum('movement__amount'), 0)
+  queryset = Product.objects.annotate(stock=sum_query).filter(stock__gt=0)
   products = list(queryset.values('id', 'name', 'stock'))
   suppliers = Supplier.objects.all()
 
@@ -266,6 +275,7 @@ def store_movement(request):
 
   if form.is_valid():
     Movement.objects.create(**form.cleaned_data)
+    messages.add_message(request, messages.SUCCESS, 'El movimiento se ha registrado exitosamente.')
     return redirect('movements')
 
   request.session['errors'] = form.errors
@@ -273,7 +283,8 @@ def store_movement(request):
   return redirect('movements.create')
 
 def inventory_pdf(request):
-  products = Product.objects.order_by('-created_at').annotate(stock=Sum('movement__amount'))
+  sum_query = Coalesce(Sum('movement__amount'), 0)
+  products = Product.objects.order_by('-created_at').annotate(stock=sum_query)
 
   template = render_to_string('pdf.html', {
     'product_list': products,

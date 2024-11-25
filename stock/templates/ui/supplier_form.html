@@ -12,7 +12,7 @@
     </div>
     <div class="col-lg-6">
       <div class="form-group mb-3">
-        <label class="form-label" for="description">Descripción</label>
+        <label class="form-label" for="description">Descripción (50 caracteres max.)</label>
         <input class="form-control {% if errors.description %} is-invalid{% endif %}" name="description" id="description" placeholder="Introduce la descripción..." maxlength="50" required value="{% value supplier 'description' %}" />
         <p class="invalid-feedback">{{ errors.description.0 }}</p>
       </div>

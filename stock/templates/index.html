@@ -3,7 +3,7 @@
 {% block title %}Estado de Inventario{% endblock title %}
 
 {% block rightbar %}
-  <a href="{% url 'pdf' %}" class="btn btn-primary">
+  <a target="_blank" rel="noopener noreferrer" href="{% url 'pdf' %}" class="btn btn-primary">
     Reporte PDF
   </a>
   <a href="{% url 'movements.create' %}" class="btn btn-success">
