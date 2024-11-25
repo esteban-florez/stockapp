@@ -1,12 +1,13 @@
 from django.db.models import Sum
 from django.http import HttpResponse, Http404
+from django.contrib.auth import login as login_user
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from weasyprint import HTML
-from .forms import CategoryForm, SupplierForm, ProductForm, MovementForm
-from .models import Product, Movement, Supplier, Category
+from .forms import CategoryForm, SupplierForm, ProductForm, MovementForm, RegisterForm
+from .models import Product, Movement, Supplier, Category, User
 from .shortcuts import session_old, session_errors
 
 class LatestListView(ListView):
@@ -282,3 +283,40 @@ def inventory_pdf(request):
 
   response['Content-Disposition'] = 'filename="Inventario.pdf"'
   return response
+
+def login(request):
+  if request.method != 'POST' and request.method != 'GET':
+    return Http404()
+
+  if request.method == 'GET':
+    errors = session_errors(request)
+    old = session_old(request)
+
+    return render(request, 'login.html', {
+      'errors': errors,
+      'old': old,
+    })
+
+def register(request):
+  if request.method != 'POST' and request.method != 'GET':
+    return Http404()
+
+  if request.method == 'GET':
+    errors = session_errors(request)
+    old = session_old(request)
+
+    return render(request, 'register.html', {
+      'errors': errors,
+      'old': old,
+    })
+
+  form = RegisterForm(request.POST)
+
+  if form.is_valid():
+    user = User.objects.create_user(**form.cleaned_data)
+    login_user(request, user)
+    return redirect('index')
+
+  request.session['errors'] = form.errors
+  request.session['old'] = request.POST
+  return redirect('register')

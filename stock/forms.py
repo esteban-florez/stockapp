@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db.models import Sum
-from .models import Category, Supplier, Product, Movement
+from .models import Category, Supplier, Product, Movement, User
 
 class UniqueNameForm(forms.Form):
   model = None
@@ -86,3 +86,23 @@ class MovementForm(forms.Form):
 
       del cleaned_data['type']
       return cleaned_data
+
+class RegisterForm(forms.Form):
+  name = forms.CharField(max_length=20, required=True)
+  email = forms.EmailField(required=True)
+  password = forms.CharField(max_length=20, required=True)
+  
+  def clean(self):
+    cleaned_data = super().clean()
+    email = cleaned_data.get('email')
+
+    if not email:
+      return cleaned_data
+
+    queryset = User.objects.filter(email=email)
+
+    if not queryset.exists():
+      return cleaned_data
+
+    error = ValidationError('Ya existe un usuario con este correo electŕonico.')
+    self.add_error(field='email', error=error)

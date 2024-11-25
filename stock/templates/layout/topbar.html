@@ -29,7 +29,11 @@
       </ul>
       <ul class="navbar-nav me-4">
         <li class="nav-item">
-          {% now "DATE_FORMAT" %}
+          {% if user.is_authenticated %}
+            {{ user.name }}
+          {% else %}
+            <a class="text-dark text-decoration-underline" href="{% url 'login' %}">Iniciar Sesión</a>
+          {% endif %}
         </li>
       </ul>
     </div>
