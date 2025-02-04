@@ -2,19 +2,8 @@
   "version": 2,
   "builds": [
     {
-      "src": "stockapp/wsgi.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb",
-        "runtime": "Python3.9"
-      }
-    },
-    {
-      "src": "build.sh",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "staticfiles_build"
-      }
+      "src": "Dockerfile",
+      "use": "@vercel/docker"
     }
   ],
   "routes": [
@@ -22,9 +11,8 @@
       "src": "/static/(.*)",
       "dest": "/static/$1"
     },
-    {
-      "src": "/(.*)",
-      "dest": "stockapp/wsgi.py"
-    }
-  ]
+  ],
+  "env": {
+    "WEASYPRINT_FONTS_PATH": "/usr/share/fonts"
+  }
 }
