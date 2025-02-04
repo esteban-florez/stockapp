@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'stockapp.wsgi.application'
+WSGI_APPLICATION = 'stockapp.wsgi.app'
 
 def fromenv(key):
   return config(key)
