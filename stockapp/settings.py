@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -76,18 +77,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'stockapp.wsgi.application'
 
+def fromenv(key):
+  return os.getenv(key) if key in os.environ[key] else config(key)
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DB_ENGINE'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'ENGINE': fromenv('DB_ENGINE'),
+        'NAME': fromenv('DB_NAME'),
+        'HOST': fromenv('DB_HOST'),
+        'PORT': fromenv('DB_PORT'),
+        'USER': fromenv('DB_USER'),
+        'PASSWORD': fromenv('DB_PASSWORD'),
     }
 }
 
@@ -133,7 +136,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
+STATIC_URL = '/staticfiles/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
