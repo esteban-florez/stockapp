@@ -78,10 +78,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'stockapp.wsgi.application'
 
 def fromenv(key):
-  return os.getenv(key) if key in os.environ[key] else config(key)
+  return config(key)
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+print(fromenv('DB_HOST'))
+print(fromenv('DB_ENGINE'))
 
 DATABASES = {
     'default': {
