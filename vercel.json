@@ -10,7 +10,7 @@
     {
       "src": "/static/(.*)",
       "dest": "/static/$1"
-    },
+    }
   ],
   "env": {
     "WEASYPRINT_FONTS_PATH": "/usr/share/fonts"

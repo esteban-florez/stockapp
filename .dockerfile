@@ -28,4 +28,4 @@ RUN python3 manage.py collectstatic --noinput
 ENV WEASYPRINT_FONTS_PATH /usr/share/fonts
 
 # Comando para iniciar Gunicorn (adaptado para Docker)
-CMD gunicorn stockapp.wsgi:application --bind 0.0.0.0:8080
+CMD gunicorn stockapp.wsgi:app --bind 0.0.0.0:8080
