@@ -82,8 +82,6 @@ def fromenv(key):
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-print(fromenv('DB_HOST'))
-print(fromenv('DB_ENGINE'))
 
 DATABASES = {
     'default': {

@@ -6,6 +6,7 @@ Django==5.1.5
 fonttools==4.55.8
 pillow==11.1.0
 psycopg==3.2.4
+psycopg-binary==3.2.4
 pycparser==2.22
 pydyf==0.11.0
 pyphen==0.17.2
