@@ -294,10 +294,10 @@ def inventory_pdf(request):
 
   # Configuración de PDFKit (opcional)
 
-  # config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf.exe') # Ajusta la ruta si es necesario
+  config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf') # Ajusta la ruta si es necesario
 
   # Generación del PDF con PDFKit
-  pdf = pdfkit.from_string(template, False) # El segundo argumento es False para devolver el PDF como bytes
+  pdf = pdfkit.from_string(template, False, configuration=config) # El segundo argumento es False para devolver el PDF como bytes
   # pdf = HTML(string=template).write_pdf()
 
   response = HttpResponse(pdf, content_type='application/pdf')
