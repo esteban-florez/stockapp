@@ -24,5 +24,5 @@ urlpatterns = [
     path('categories/store', views.store_category, name='categories.store'),
     path('categories/<int:category_id>/edit', views.edit_category, name='categories.edit'),
     path('categories/<int:category_id>/update', views.update_category, name='categories.update'),
-    # path('pdf', views.inventory_pdf, name='pdf')
+    path('pdf', views.inventory_pdf, name='pdf')
 ]

@@ -8,7 +8,7 @@ from django.views.generic.list import ListView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 # from weasyprint import HTML
-# import pdfkit
+import pdfkit
 # import os.path
 from .forms import CategoryForm, SupplierForm, ProductForm, MovementForm, RegisterForm, LoginForm
 from .models import Product, Movement, Supplier, Category, User
@@ -284,26 +284,26 @@ def store_movement(request):
   request.session['old'] = request.POST
   return redirect('movements.create')
 
-# def inventory_pdf(request):
-#   sum_query = Coalesce(Sum('movement__amount'), 0)
-#   products = Product.objects.order_by('-created_at').annotate(stock=sum_query)
+def inventory_pdf(request):
+  sum_query = Coalesce(Sum('movement__amount'), 0)
+  products = Product.objects.order_by('-created_at').annotate(stock=sum_query)
 
-#   template = render_to_string('pdf.html', {
-#     'product_list': products,
-#   })
+  template = render_to_string('pdf.html', {
+    'product_list': products,
+  })
 
-#   # Configuración de PDFKit (opcional)
+  # Configuración de PDFKit (opcional)
 
-#   # config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf.exe') # Ajusta la ruta si es necesario
+  # config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf.exe') # Ajusta la ruta si es necesario
 
-#   # Generación del PDF con PDFKit
-#   pdf = pdfkit.from_string(template, False) # El segundo argumento es False para devolver el PDF como bytes
-#   # pdf = HTML(string=template).write_pdf()
+  # Generación del PDF con PDFKit
+  pdf = pdfkit.from_string(template, False) # El segundo argumento es False para devolver el PDF como bytes
+  # pdf = HTML(string=template).write_pdf()
 
-#   response = HttpResponse(pdf, content_type='application/pdf')
+  response = HttpResponse(pdf, content_type='application/pdf')
 
-#   response['Content-Disposition'] = 'filename="Inventario.pdf"'
-#   return response
+  response['Content-Disposition'] = 'filename="Inventario.pdf"'
+  return response
 
 @login_not_required
 def login(request):
