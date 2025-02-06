@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Estado de Inventario{% endblock title %}
 
 {% block rightbar %}
-  <a target="_blank" rel="noopener noreferrer" href="{% url 'pdf' %}" class="btn btn-primary">
+  <a target="_blank" rel="noopener noreferrer" href="{% url 'download' %}" class="btn btn-primary">
     Reporte PDF
   </a>
   <a href="{% url 'movements.create' %}" class="btn btn-success">

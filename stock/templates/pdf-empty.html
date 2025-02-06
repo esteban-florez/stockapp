@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reporte PDF</title>
+</head>
+<body>
+  <script src="{% static 'vendor/js/html2pdf.js' %}"></script>
+  <script type="module">
+    const options = {
+      margin: 10,
+      filename: 'Reporte de Inventario.pdf',
+
+    }
+    const response = await fetch('/pdf')
+    const html = await response.text()
+    html2pdf().set(options).from(html).save()
+  </script>
+</body>
+</html>

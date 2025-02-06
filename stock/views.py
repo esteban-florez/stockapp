@@ -288,22 +288,15 @@ def inventory_pdf(request):
   sum_query = Coalesce(Sum('movement__amount'), 0)
   products = Product.objects.order_by('-created_at').annotate(stock=sum_query)
 
-  template = render_to_string('pdf.html', {
+  string = render_to_string('pdf.html', {
     'product_list': products,
   })
+  
+  return HttpResponse(content=string)
 
-  # Configuración de PDFKit (opcional)
-
-  config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf') # Ajusta la ruta si es necesario
-
-  # Generación del PDF con PDFKit
-  pdf = pdfkit.from_string(template, False, configuration=config) # El segundo argumento es False para devolver el PDF como bytes
-  # pdf = HTML(string=template).write_pdf()
-
-  response = HttpResponse(pdf, content_type='application/pdf')
-
-  response['Content-Disposition'] = 'filename="Inventario.pdf"'
-  return response
+def download_pdf(request):
+  return render(request, 'pdf-empty.html')
+  
 
 @login_not_required
 def login(request):
